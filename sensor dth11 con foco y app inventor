@@ -1,0 +1,53 @@
+#include "BluetoothSerial.h"
+#include <DHT.h>
+
+BluetoothSerial SerialBT;
+
+#define DHTPIN 4
+#define DHTTYPE DHT11
+
+#define RELE 23
+
+DHT dht(DHTPIN, DHTTYPE);
+
+float temperatura;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  SerialBT.begin("ESP32_TEMP");
+
+  dht.begin();
+
+  pinMode(RELE, OUTPUT);
+
+  // Relé apagado
+  digitalWrite(RELE, HIGH);
+
+}
+
+void loop() {
+
+  temperatura = dht.readTemperature();
+
+  // Enviar temperatura a la app
+  SerialBT.println(temperatura);
+
+  Serial.print("Temperatura: ");
+  Serial.println(temperatura);
+
+  // Mayor a 30 grados
+  if (temperatura > 30) {
+
+    digitalWrite(RELE, LOW);
+
+  } else {
+
+    digitalWrite(RELE, HIGH);
+
+  }
+
+  delay(2000);
+
+}
