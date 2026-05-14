@@ -1,0 +1,70 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+char dato;
+
+// Pines LEDs
+#define LED1 2
+#define LED2 4
+#define LED3 5
+#define LED4 18
+
+void setup() {
+
+  Serial.begin(115200);
+
+  SerialBT.begin("ESP32_LEDS");
+
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(LED4, OUTPUT);
+
+}
+
+void loop() {
+
+  if (SerialBT.available()) {
+
+    dato = SerialBT.read();
+
+    // LED 1
+    if (dato == 'A') {
+      digitalWrite(LED1, HIGH);
+    }
+
+    if (dato == 'a') {
+      digitalWrite(LED1, LOW);
+    }
+
+    // LED 2
+    if (dato == 'B') {
+      digitalWrite(LED2, HIGH);
+    }
+
+    if (dato == 'b') {
+      digitalWrite(LED2, LOW);
+    }
+
+    // LED 3
+    if (dato == 'C') {
+      digitalWrite(LED3, HIGH);
+    }
+
+    if (dato == 'c') {
+      digitalWrite(LED3, LOW);
+    }
+
+    // LED 4
+    if (dato == 'D') {
+      digitalWrite(LED4, HIGH);
+    }
+
+    if (dato == 'd') {
+      digitalWrite(LED4, LOW);
+    }
+
+  }
+
+}
