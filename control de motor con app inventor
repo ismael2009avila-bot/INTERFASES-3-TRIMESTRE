@@ -1,0 +1,61 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+#define IN1 26
+#define IN2 27
+
+char dato;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  SerialBT.begin("ESP32_MOTOR");
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  detenerMotor();
+
+}
+
+void loop() {
+
+  if (SerialBT.available()) {
+
+    dato = SerialBT.read();
+
+    // ADELANTE
+    if (dato == 'F') {
+
+      digitalWrite(IN1, HIGH);
+      digitalWrite(IN2, LOW);
+
+    }
+
+    // ATRAS
+    if (dato == 'B') {
+
+      digitalWrite(IN1, LOW);
+      digitalWrite(IN2, HIGH);
+
+    }
+
+    // PARAR
+    if (dato == 'S') {
+
+      detenerMotor();
+
+    }
+
+  }
+
+}
+
+void detenerMotor() {
+
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+
+}
