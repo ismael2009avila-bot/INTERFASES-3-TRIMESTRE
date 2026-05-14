@@ -1,0 +1,44 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+#define RELE 23
+
+char dato;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  SerialBT.begin("ESP32_AVILA");
+
+  pinMode(RELE, OUTPUT);
+
+  // Relé apagado
+  digitalWrite(RELE, HIGH);
+
+}
+
+void loop() {
+
+  if (SerialBT.available()) {
+
+    dato = SerialBT.read();
+
+    // PRENDER FOCO
+    if (dato == '1') {
+
+      digitalWrite(RELE, LOW);
+
+    }
+
+    // APAGAR FOCO
+    if (dato == '0') {
+
+      digitalWrite(RELE, HIGH);
+
+    }
+
+  }
+
+}
